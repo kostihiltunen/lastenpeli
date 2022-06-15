@@ -77,8 +77,6 @@ void loop() {
 
     if(hall1State == 0 && hall2State == 0 && hall3State == 0 && hall4State == 0){
         solve();
-    } else {
-        solved = 0;
     }
 }
 
@@ -150,12 +148,22 @@ void offLedModule4() {
 
 void solve() {
     solved = 1;
+    
     for(int i = 0; i < strip.numPixels(); i++) {
         strip.setPixelColor(i, strip.Color(255, 255, 255));
     // delay(wait);
     strip.show();
     allLedsOff();
-    } 
+    }
+    
+    hall1State = digitalRead(hall1);
+    hall2State = digitalRead(hall2);
+    hall3State = digitalRead(hall3);
+    hall4State = digitalRead(hall4);
+    
+    if(hall1State == 1 || hall2State == 1 || hall3State == 1 || hall4State == 1) {
+        solved = 0;
+    }
 }
 
 void allLedsOff() {
