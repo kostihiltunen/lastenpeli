@@ -1,13 +1,5 @@
 // elementaalio.ino
 
-/*
-parts:
-1 Arduino Uno WIFI rev2 controller, 1 Crowtail - Base Shield for Arduino v2.0, 4 Crowtail - Hall Sensor v2.0 modules, 4 Crowtail - RGB-LED v2.0 modules, 1 MP3 Player v2.0 module
-description:
-When a sensor is activated a specific RGB-LED module lights up. When all sensors
-are activated MP3 player plays a sound file
-*/
-
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 9
@@ -22,6 +14,7 @@ are activated MP3 player plays a sound file
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(16, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 int wait = 10;
+int solved = 0;
 
 // variables for Hall sensor pins
 int hall1 = 2;
@@ -36,6 +29,7 @@ int hall3State = 1;
 int hall4State = 1;
 
 void setup() {
+    Serial.begin(9600);
     // set pins active
     pinMode(hall1, INPUT);
     pinMode(hall2, INPUT);
@@ -47,42 +41,45 @@ void setup() {
 }
 
 void loop() {
-    Serial.begin(9600);
-    // reading sensor values to variables
-    hall1State = digitalRead(hall1);
-    hall2State = digitalRead(hall2);                                                             
-    hall3State = digitalRead(hall3);
-    hall4State = digitalRead(hall4);
-    // printing variables to console                                                     
-    Serial.println(hall1State);
-    Serial.println(hall2State);
-    Serial.println(hall3State);
-    Serial.println(hall4State);
-    
-    if(hall1State == 0) {
-        onLedModule1();
-    } else {
-        offLedModule1();
+    if(solved == 0) {
+        // reading sensor values to variables
+        hall1State = digitalRead(hall1);
+        hall2State = digitalRead(hall2);                                                             
+        hall3State = digitalRead(hall3);
+        hall4State = digitalRead(hall4);
+        // printing variables to console                                                     
+        Serial.println(hall1State);
+        Serial.println(hall2State);
+        Serial.println(hall3State);
+        Serial.println(hall4State);
+        
+        if(hall1State == 0) {
+            onLedModule1();
+        } else {
+            offLedModule1();
+        }
+        if(hall2State == 0) {
+            onLedModule2();
+        } else {
+            offLedModule2();
+        }
+        if(hall3State == 0) {
+            onLedModule3();
+        } else {
+            offLedModule3();
+        } 
+        if(hall4State == 0) {
+            onLedModule4();
+        } else {
+            offLedModule4();
+        }
     }
-    if(hall2State == 0) {
-        onLedModule2();
-    } else {
-        offLedModule2();
-    }
-    if(hall3State == 0) {
-        onLedModule3();
-    } else {
-        offLedModule3();
-    } 
-    if(hall4State == 0) {
-        onLedModule4();
-    } else {
-        offLedModule4();
-    }
+
     if(hall1State == 0 && hall2State == 0 && hall3State == 0 && hall4State == 0){
         solve();
-    } 
-
+    } else {
+        solved = 0;
+    }
 }
 
 void onLedModule1() {
@@ -116,7 +113,9 @@ void offLedModule2() {
     strip.show();
     delay(wait);
 
-}void onLedModule3() {
+}
+
+void onLedModule3() {
     for(int i = 8; i < 12; i++) {
         strip.setPixelColor(i, strip.Color(255, 0, 0));
     }
@@ -131,7 +130,9 @@ void offLedModule3() {
     strip.show();
     delay(wait);
 
-}void onLedModule4() {
+}
+
+void onLedModule4() {
     for(int i = 12; i < 16; i++) {
         strip.setPixelColor(i, strip.Color(255, 0, 0));
     }
@@ -148,6 +149,7 @@ void offLedModule4() {
 }
 
 void solve() {
+    solved = 1;
     for(int i = 0; i < strip.numPixels(); i++) {
         strip.setPixelColor(i, strip.Color(255, 255, 255));
     // delay(wait);
