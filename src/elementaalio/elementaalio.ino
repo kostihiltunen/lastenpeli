@@ -1,6 +1,9 @@
 // elementaalio.ino
 
+// included libraries
 #include <Adafruit_NeoPixel.h>
+#include <SoftwareSerial.h>
+#include <MP3Player_KT403A.h>
 
 #define LED_PIN 9
 
@@ -12,6 +15,10 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(16, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+// Note: You must define a SoftwareSerial class object that the name must be mp3, 
+//       but you can change the pin number according to the actual situation.
+SoftwareSerial mp3(2, 3);
 
 int wait = 10;
 int solved = 0;
@@ -29,6 +36,7 @@ int hall3State = 1;
 int hall4State = 1;
 
 void setup() {
+    mp3.begin(9600)
     Serial.begin(9600);
     // set pins active
     pinMode(hall1, INPUT);
