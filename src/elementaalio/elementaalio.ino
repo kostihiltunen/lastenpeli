@@ -36,8 +36,14 @@ int hall3State = 1;
 int hall4State = 1;
 
 void setup() {
-    mp3.begin(9600)
+    mp3.begin(9600);
     Serial.begin(9600);
+    delay(100);
+    
+    SelectPlayerDevice(0x02);
+    SetVolume(0x1E);
+           
+
     // set pins active
     pinMode(hall1, INPUT);
     pinMode(hall2, INPUT);
