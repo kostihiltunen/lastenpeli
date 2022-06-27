@@ -8,8 +8,8 @@ part of a puzzle in a escape room game
 - 4 Crowtail - RGB-LED v2.0 modules 
 - 1 Crowtail - MP3 Player v2.0 module
 ### Description
-When a sensor is activated a specific RGB-LED module lights up with specific color. When all sensors
-are activated MP3 player plays a sound file
+When a sensor is activated a specific RGB-LED module lights up with specific color and chosen audio file is played. When all sensors
+are activated MP3 player plays sound file for the solution.
 ### Libraries needed
 - Adafruit_NeoPixel
 - MP3Player_KT403A
