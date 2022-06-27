@@ -18,10 +18,18 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(16, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 // Note: You must define a SoftwareSerial class object that the name must be mp3, 
 //       but you can change the pin number according to the actual situation.
-SoftwareSerial mp3(2, 3);
+// Note2: Use pins that are not already in use!!1
+SoftwareSerial mp3(7, 8);
 
+// Integer variable for delays
 int wait = 10;
+
+// Variable for solving whole puzzle (1 = solved, 0 = not solved)
 int solved = 0;
+
+// Variables for playback
+int activeHall1 = 0;
+int activeHall2 = 0;
 
 // variables for Hall sensor pins
 int hall1 = 2;
@@ -39,12 +47,11 @@ void setup() {
     mp3.begin(9600);
     Serial.begin(9600);
     delay(100);
-    
-    SelectPlayerDevice(0x02);
-    SetVolume(0x1E);
-           
 
-    // set pins active
+    SelectPlayerDevice(0x02);
+    SetVolume(0x0E);
+
+    // set led pins active
     pinMode(hall1, INPUT);
     pinMode(hall2, INPUT);
     pinMode(hall3, INPUT);
@@ -52,6 +59,7 @@ void setup() {
     // set led strips active
     strip.begin();
     strip.show();
+    SpecifyMusicPlay(6);
 }
 
 void loop() {
@@ -94,12 +102,17 @@ void loop() {
     }
 }
 
+/* Functions for operating leds */
+
 void onLedModule1() {
     for(int i = 0; i < 4; i++) {
         strip.setPixelColor(i, strip.Color(255, 0, 0));
     }
     strip.show();
     delay(wait);
+    if(activeHall1 != 2) {
+        playHall1();
+    }
 }
 
 void offLedModule1() {
@@ -108,6 +121,8 @@ void offLedModule1() {
     }
     strip.show();
     delay(wait);
+    PlayPause();
+    activeHall1 = 0;
 }
 
 void onLedModule2() {
@@ -116,6 +131,9 @@ void onLedModule2() {
     }
     strip.show();
     delay(wait);
+    // if(activeHall2 != 2) {
+    //     playHall2();
+    // }
 }
 
 void offLedModule2() {
@@ -124,7 +142,8 @@ void offLedModule2() {
     }
     strip.show();
     delay(wait);
-
+    // PlayPause();
+    // activeHall2 = 0;
 }
 
 void onLedModule3() {
@@ -187,3 +206,20 @@ void allLedsOff() {
     strip.show();
     delay(wait);
 }
+
+/* Functions for audio playback */
+
+
+
+void playHall1() {
+    SpecifyMusicPlay(1);
+//    Serial.println("playHall1() executed");
+    delay(1000);
+    activeHall1 = 2;
+}
+
+// void playHall2() {
+//     SpecifyMusicPlay(2);
+//     delay(1000);
+//     activeHall2 = 2;
+// }
