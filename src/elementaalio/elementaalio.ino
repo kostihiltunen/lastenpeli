@@ -27,7 +27,7 @@ int wait = 10;
 // Variable for solving whole puzzle (1 = solved, 0 = not solved)
 int solved = 0;
 
-// Variables for playback
+// Variables for playback (0 = not playing, 2 = is playing)
 int activeHall1 = 0;
 int activeHall2 = 0;
 
@@ -69,6 +69,7 @@ void loop() {
         hall2State = digitalRead(hall2);                                                             
         hall3State = digitalRead(hall3);
         hall4State = digitalRead(hall4);
+
         // printing variables to console                                                     
         Serial.println(hall1State);
         Serial.println(hall2State);
@@ -121,8 +122,11 @@ void offLedModule1() {
     }
     strip.show();
     delay(wait);
+
+    if(activeHall2 != 2) {
     PlayPause();
     activeHall1 = 0;
+    }
 }
 
 void onLedModule2() {
@@ -131,9 +135,10 @@ void onLedModule2() {
     }
     strip.show();
     delay(wait);
-    // if(activeHall2 != 2) {
-    //     playHall2();
-    // }
+
+    if(activeHall2 != 2) {
+        playHall2();
+    }
 }
 
 void offLedModule2() {
@@ -142,8 +147,10 @@ void offLedModule2() {
     }
     strip.show();
     delay(wait);
-    // PlayPause();
-    // activeHall2 = 0;
+    if(activeHall1 != 2) {
+    PlayPause();
+    activeHall2 = 1;
+    }
 }
 
 void onLedModule3() {
@@ -213,13 +220,14 @@ void allLedsOff() {
 
 void playHall1() {
     SpecifyMusicPlay(1);
-//    Serial.println("playHall1() executed");
+    Serial.println("playHall1() executed");
     delay(1000);
     activeHall1 = 2;
 }
 
-// void playHall2() {
-//     SpecifyMusicPlay(2);
-//     delay(1000);
-//     activeHall2 = 2;
-// }
+void playHall2() {
+    SpecifyMusicPlay(2);
+    Serial.println("playHall2() executed");
+    delay(1000);
+    activeHall2 = 2;
+}
