@@ -27,31 +27,37 @@ int wait = 10;
 // Variable for solving whole puzzle (1 = solved, 0 = not solved)
 int solved = 0;
 
-// variables for Hall sensor pins
+// Variables for Hall sensor pins
 int hall1 = 2;
 int hall2 = 3;
 int hall3 = 4;
 int hall4 = 5;
 
-// variables for sensor states (1 = not active, 0 = active)
+// Variables for sensor states (1 = not active, 0 = active)
+// Variables are this way because value for not active from
+// arduino and sensor is 1.
 int hall1State = 1;
 int hall2State = 1;
 int hall3State = 1;
 int hall4State = 1;
 
-// Variables for playback (0 = not active, 1 = active)
+// Variables for led acvity (0 = not active, 1 = active)
 int activeHall1 = 0;
 int activeHall2 = 0;
 int activeHall3 = 0;
+int activeHall4 = 0;
 
-// Variables to indicate if paused (0 = paused, 1 = playing)
+// Variables to indicate if audio is playing (0 = paused, 1 = playing)
 int playingHall1 = 0;
 int playingHall2 = 0;
+int playingHall3 = 0;
+int playingHall4 = 0;
 
-// Variables for pausing (0 = not pausable, 1 = pausable)
+// Variables for pausing audio (0 = not pausable, 1 = pausable)
 int pausableHall1 = 0;
 int pausableHall2 = 0;
-
+int pausableHall3 = 0;
+int pausableHall4 = 0;
 
 void setup() {
     mp3.begin(9600);
@@ -101,11 +107,11 @@ void loop() {
         } else {
             offLedModule2();
         }
-        // if(hall3State == 0) {
-        //     onLedModule3();
-        // } else {
-        //     offLedModule3();
-        // } 
+        if(hall3State == 0) {
+            onLedModule3();
+        } else {
+            offLedModule3();
+        } 
         // if(hall4State == 0) {
         //     onLedModule4();
         // } else {
@@ -126,6 +132,7 @@ void onLedModule1() {
         playingHall1 = 1;
         pausableHall1 = 1;
         pausableHall2 = 0;
+        pausableHall3 = 0;
         for(int i = 0; i < 4; i++) {
             strip.setPixelColor(i, strip.Color(255, 0, 0));
         }
@@ -176,6 +183,8 @@ void onLedModule2() {
         playingHall2 = 1;
         pausableHall2 = 1;
         pausableHall1 = 0;
+        pausableHall3 = 0;
+
         for(int i = 4; i < 8; i++) {
             strip.setPixelColor(i, strip.Color(255, 0, 0));
         }
@@ -189,7 +198,7 @@ void onLedModule2() {
             //     playingHall1 = 0;
             //     activeHall1 = 0;
             // }
-            playHall2();
+        playHall2();
         // }
     }
 }
@@ -200,13 +209,13 @@ void offLedModule2() {
         for(int i = 4; i < 8; i++) {
             strip.setPixelColor(i, strip.Color(0, 0, 0));
         }
-    strip.show();
-    delay(wait);
+        strip.show();
+        delay(wait);
 
-    if(pausableHall2 == 1) {
-        pausableHall2 = 0;
-        PlayPause();
-    }
+        if(pausableHall2 == 1) {
+            pausableHall2 = 0;
+            PlayPause();
+        }
 
     // if(activeHall2 = 1; activeHall1 != 1) {
         // PlayPause();
@@ -221,29 +230,40 @@ void offLedModule2() {
 }
 
 void onLedModule3() {
-    for(int i = 8; i < 12; i++) {
-        strip.setPixelColor(i, strip.Color(255, 0, 0));
-    }
-    strip.show();
-    delay(wait);
+    if(activeHall3 == 0) {
+        activeHall3 = 1;
+        playingHall3 = 1;
+        pausableHall3 = 1;
+        pausableHall1 = 0;
+        pausableHall2 = 0;
 
-    if(activeHall3 != 2) {
+        for(int i = 8; i < 12; i++) {
+            strip.setPixelColor(i, strip.Color(255, 0, 0));
+        }
+        strip.show();
+        delay(wait);
+
+        // if(activeHall3 != 2) {
         playHall3();
+        // }
     }
 }
 
 void offLedModule3() {
-    for(int i = 8; i < 12; i++) {
-        strip.setPixelColor(i, strip.Color(0, 0, 0));
-    }
-    strip.show();
-    delay(wait);
-
-    if(activeHall1 != 2 && activeHall2 != 2) {
-        PlayPause();
+    if(activeHall3 == 1) {
         activeHall3 = 0;
-    }
+        for(int i = 8; i < 12; i++) {
+            strip.setPixelColor(i, strip.Color(0, 0, 0));
+        }
+        strip.show();
+        delay(wait);
 
+        if(pausableHall3 == 1) {
+            pausableHall3 = 0;
+            PlayPause();
+            // activeHall3 = 0;
+        }
+    }
 }
 
 void onLedModule4() {
@@ -294,13 +314,13 @@ void allLedsOff() {
 
 void playHall1() {
     if(playingHall1 == 1) {
-    playingHall1 = 0;
-    PlayPause();
-    delay(wait);
- 
-    SpecifyMusicPlay(1);
-    Serial.println("playHall1() executed");
-    delay(wait);
+        playingHall1 = 0;
+        PlayPause();
+        delay(wait);
+    
+        SpecifyMusicPlay(1);
+        Serial.println("playHall1() executed");
+        delay(wait);
     }
 }
 
@@ -318,9 +338,15 @@ void playHall2() {
 }
 
 void playHall3() {
-    SpecifyMusicPlay(3);
-    Serial.println("playHall3() executed");
-    delay(wait);
-    activeHall3 = 2;
+    if(playingHall3 == 1) {
+        playingHall3 = 0;
+        PlayPause();
+        delay(wait);
+    
+        SpecifyMusicPlay(3);
+        Serial.println("playHall3() executed");
+        delay(wait);
+    }
+    // activeHall3 = 2;
     
 }
