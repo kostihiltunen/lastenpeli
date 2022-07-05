@@ -10,6 +10,6 @@ part of a puzzle in a escape room game
 ### Description
 When a sensor is activated a specific RGB-LED module lights up with specific color and chosen audio file is played. When all sensors
 are activated MP3 player plays sound file for the solution.
-### Libraries needed
+### Additional libraries needed
 - Adafruit_NeoPixel
 - MP3Player_KT403A
