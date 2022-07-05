@@ -112,11 +112,11 @@ void loop() {
         } else {
             offLedModule3();
         } 
-        // if(hall4State == 0) {
-        //     onLedModule4();
-        // } else {
-        //     offLedModule4();
-        // }
+        if(hall4State == 0) {
+            onLedModule4();
+        } else {
+            offLedModule4();
+        }
     }
 
     if(hall1State == 0 && hall2State == 0 && hall3State == 0 && hall4State == 0){
@@ -133,6 +133,8 @@ void onLedModule1() {
         pausableHall1 = 1;
         pausableHall2 = 0;
         pausableHall3 = 0;
+        pausableHall4 = 0;
+
         for(int i = 0; i < 4; i++) {
             strip.setPixelColor(i, strip.Color(255, 0, 0));
         }
@@ -155,6 +157,7 @@ void onLedModule1() {
 void offLedModule1() {
     if(activeHall1 == 1) {
         activeHall1 = 0;
+
         for(int i = 0; i < 4; i++) {
             strip.setPixelColor(i, strip.Color(0, 0, 0));
         }
@@ -184,6 +187,7 @@ void onLedModule2() {
         pausableHall2 = 1;
         pausableHall1 = 0;
         pausableHall3 = 0;
+        pausableHall4 = 0;
 
         for(int i = 4; i < 8; i++) {
             strip.setPixelColor(i, strip.Color(255, 0, 0));
@@ -236,6 +240,7 @@ void onLedModule3() {
         pausableHall3 = 1;
         pausableHall1 = 0;
         pausableHall2 = 0;
+        pausableHall4 = 0;
 
         for(int i = 8; i < 12; i++) {
             strip.setPixelColor(i, strip.Color(255, 0, 0));
@@ -267,19 +272,39 @@ void offLedModule3() {
 }
 
 void onLedModule4() {
-    for(int i = 12; i < 16; i++) {
-        strip.setPixelColor(i, strip.Color(255, 0, 0));
+    if(activeHall4 == 0) {
+        activeHall4 = 1;
+        playingHall4 = 1;
+        pausableHall4 = 1;
+        pausableHall1 = 0;
+        pausableHall2 = 0;
+        pausableHall3 = 0;
+
+        for(int i = 12; i < 16; i++) {
+            strip.setPixelColor(i, strip.Color(255, 0, 0));
+        }
+        strip.show();
+        delay(wait);
+
+        playHall4();
     }
-    strip.show();
-    delay(wait);
 }
 
 void offLedModule4() {
-    for(int i = 12; i < 16; i++) {
-        strip.setPixelColor(i, strip.Color(0, 0, 0));
+    if(activeHall4 == 1) {
+        activeHall4 = 0;
+
+        for(int i = 12; i < 16; i++) {
+            strip.setPixelColor(i, strip.Color(0, 0, 0));
+        }
+        strip.show();
+        delay(wait);
+
+        if(pausableHall4 == 1){
+            pausableHall4 = 0;
+            PlayPause();
+        }
     }
-    strip.show();
-    delay(wait);
 }
 
 void solve() {
@@ -349,4 +374,15 @@ void playHall3() {
     }
     // activeHall3 = 2;
     
+}
+
+void playHall4() {
+    if(playingHall4 == 1) {
+        playingHall4 = 0;
+        PlayPause();
+        delay(wait);
+
+        SpecifyMusicPlay(4);
+        delay(wait);
+    }
 }
