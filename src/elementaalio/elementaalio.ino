@@ -141,16 +141,7 @@ void onLedModule1() {
         strip.show();
         delay(wait);
 
-    // if(activeHall1 != 1) {
-        // playingHall1 = 0;
-        // if(playingHall2 == 1) {
-        //     PlayPause();
-        //     playingHall2 = 1;
-        //     activeHall2 = 0;
-        // }
         playHall1();
-        // delay(wait);
-    // }
     }
 }
 
@@ -168,15 +159,6 @@ void offLedModule1() {
             pausableHall1 = 0;
             PlayPause();
         }
-        // if(activeHall1 = 1 && activeHall2 != 1) {
-            // PlayPause();
-            // activeHall1 = 0;
-        // }
-
-        // if(playingHall2 == 0) {
-        //     PlayPause();
-        //     playingHall2 = 1;
-        // }
     }    
 }
 
@@ -195,15 +177,7 @@ void onLedModule2() {
         strip.show();
         delay(wait);
 
-        // if(activeHall2 != 1) {
-            // playingHall2 = 0;
-            // if(pausedHall1 = 0){
-            //     PlayPause();
-            //     playingHall1 = 0;
-            //     activeHall1 = 0;
-            // }
         playHall2();
-        // }
     }
 }
 
@@ -220,16 +194,6 @@ void offLedModule2() {
             pausableHall2 = 0;
             PlayPause();
         }
-
-    // if(activeHall2 = 1; activeHall1 != 1) {
-        // PlayPause();
-        // activeHall2 = 0;
-    // }
-
-    // if(playingHall1 == 0) {
-    //     PlayPause();
-    //     playingHall1 = 1;
-    // }
     }
 }
 
@@ -248,9 +212,7 @@ void onLedModule3() {
         strip.show();
         delay(wait);
 
-        // if(activeHall3 != 2) {
         playHall3();
-        // }
     }
 }
 
@@ -266,7 +228,6 @@ void offLedModule3() {
         if(pausableHall3 == 1) {
             pausableHall3 = 0;
             PlayPause();
-            // activeHall3 = 0;
         }
     }
 }
@@ -358,7 +319,6 @@ void playHall2() {
     SpecifyMusicPlay(2);
     Serial.println("playHall2() executed");
     delay(wait);
-    // pausedHall2 = 0;
     }
 }
 
@@ -372,8 +332,6 @@ void playHall3() {
         Serial.println("playHall3() executed");
         delay(wait);
     }
-    // activeHall3 = 2;
-    
 }
 
 void playHall4() {
