@@ -24,7 +24,7 @@ SoftwareSerial mp3(7, 8);
 // Integer variable for delays
 int wait = 10;
 
-// Variable for solving whole puzzle (1 = solved, 0 = not solved)
+// Variable for solving whole puzzle (0 = not solved, 1 = solved)
 int solved = 0;
 
 // Variables for Hall sensor pins
@@ -46,12 +46,14 @@ int activeHall1 = 0;
 int activeHall2 = 0;
 int activeHall3 = 0;
 int activeHall4 = 0;
+int activeSolved = 0;
 
 // Variables to indicate if audio is playing (0 = paused, 1 = playing)
 int playingHall1 = 0;
 int playingHall2 = 0;
 int playingHall3 = 0;
 int playingHall4 = 0;
+int playingSolved = 0;
 
 // Variables for pausing audio (0 = not pausable, 1 = pausable)
 int pausableHall1 = 0;
@@ -283,13 +285,24 @@ void solve() {
     hall3State = digitalRead(hall3);
     hall4State = digitalRead(hall4);
     
+    if(playingSolved == 0) {
+        playingSolved = 1;
+        playSolved();
+    } 
+
     if(hall1State == 1 || hall2State == 1 || hall3State == 1 || hall4State == 1) {
         solved = 0;
+        playingSolved = 0;
+        activeSolved = 0;
+        activeHall1 = 0;
+        activeHall2 = 0;
+        activeHall3 = 0;
+        activeHall4 = 0;
     }
 }
 
 void allLedsOff() {
-    for(uint16_t i = 0; i < strip.numPixels(); i++) {
+    for(int i = 0; i < strip.numPixels(); i++) {
         strip.setPixelColor(i, strip.Color(0, 0, 0));
     }
     strip.show();
@@ -305,7 +318,6 @@ void playHall1() {
         delay(wait);
     
         SpecifyMusicPlay(1);
-        Serial.println("playHall1() executed");
         delay(wait);
     }
 }
@@ -317,7 +329,6 @@ void playHall2() {
     delay(wait);
 
     SpecifyMusicPlay(2);
-    Serial.println("playHall2() executed");
     delay(wait);
     }
 }
@@ -329,7 +340,6 @@ void playHall3() {
         delay(wait);
     
         SpecifyMusicPlay(3);
-        Serial.println("playHall3() executed");
         delay(wait);
     }
 }
@@ -341,6 +351,17 @@ void playHall4() {
         delay(wait);
 
         SpecifyMusicPlay(4);
+        delay(wait);
+    }
+}
+
+void playSolved() {
+    if(activeSolved == 0) {
+        activeSolved = 1;
+        PlayPause();
+        delay(wait);
+
+        SpecifyMusicPlay(5);
         delay(wait);
     }
 }
