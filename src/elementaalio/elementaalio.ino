@@ -333,14 +333,16 @@ void pulseYellowFill() {
   }
 }
 
-void pulseRedFill() {
-  for(int i = 0; i < 256; i++) {
-    strip.fill(strip.Color(i, 0, 0), 0, 3);
-	strip.show();
+void pulseRedFill(uint8_t wait) {
+  for(int i = 20; i < 256; i++) {
+    strip.fill(strip.Color(i, 0, 0), 0, 4);
+	  strip.show();
+    delay(wait - 2);
   }
-  for(int i = 255; i > -1; i--) {
-    strip.fill(strip.Color(i, 0, 0), 0, 3);
-	strip.show();
+  for(int i = 255; i > 19; i--) {
+    strip.fill(strip.Color(i, 0, 0), 0, 4);
+	  strip.show();
+    delay(wait);
   }
 }
 
