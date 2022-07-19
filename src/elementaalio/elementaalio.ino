@@ -309,6 +309,63 @@ void allLedsOff() {
     delay(wait);
 }
 
+void rainbow(int wait) {
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+    for(int i=0; i<strip.numPixels(); i++) {
+      int pixelHue = firstPixelHue + (i * 65536L / strip.numPixels());
+      strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
+    }
+    strip.show();
+    delay(wait);
+  }
+}
+
+/*pulsating effect implemented with NeoPixels fill() method*/
+
+void pulseYellowFill() {
+  for(int i = 0; i < 225; i++) {
+	strip.fill(strip.Color(i+15, i, 0), 11, 4);
+    strip.show();	  
+  }
+  for(int i = 225; i > -1; i--) {
+	strip.fill(strip.Color(i+15, i, 0), 11, 4);
+	strip.show();
+  }
+}
+
+void pulseRedFill() {
+  for(int i = 0; i < 256; i++) {
+    strip.fill(strip.Color(i, 0, 0), 0, 3);
+	strip.show();
+  }
+  for(int i = 255; i > -1; i--) {
+    strip.fill(strip.Color(i, 0, 0), 0, 3);
+	strip.show();
+  }
+}
+
+void pulseGreenFill() {
+  for(int i = 0; i < 256; i++) {
+    strip.fill(strip.Color(0, i, 0), 4, 7);
+	strip.show();
+  }
+  for(int i = 255; i > -1; i--) {
+    strip.fill(strip.Color(0, i, 0), 4, 7);
+	strip.show();
+  }
+}
+
+void pulseBlueFill() {
+  for(int i = 0; i < 256; i++) {
+    strip.fill(strip.Color(0, 0, i), 8, 11);
+	strip.show();
+  }
+  for(int i = 0; i > -1; i--) {
+    strip.fill(strip.Color(0, 0, i), 8, 11);
+	strip.show();
+  }
+}
+
 /* Functions for audio playback */
 
 void playHall1() {
