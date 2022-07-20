@@ -129,6 +129,7 @@ void loop() {
 /* Functions for operating leds */
 
 void onLedModule1() {
+    pulseYellowFill(5);
     if(activeHall1 == 0){
         activeHall1 = 1;
         playingHall1 = 1;
@@ -137,11 +138,11 @@ void onLedModule1() {
         pausableHall3 = 0;
         pausableHall4 = 0;
 
-        for(int i = 0; i < 4; i++) {
-            strip.setPixelColor(i, strip.Color(255, 0, 0));
-        }
-        strip.show();
-        delay(wait);
+        // for(int i = 0; i < 4; i++) {
+        //     strip.setPixelColor(i, strip.Color(255, 0, 0));
+        // }
+        // strip.show();
+        // delay(wait);
 
         playHall1();
     }
@@ -165,6 +166,7 @@ void offLedModule1() {
 }
 
 void onLedModule2() {
+    pulseRedFill(5);
     if(activeHall2 == 0) {
         activeHall2 = 1;
         playingHall2 = 1;
@@ -173,11 +175,11 @@ void onLedModule2() {
         pausableHall3 = 0;
         pausableHall4 = 0;
 
-        for(int i = 4; i < 8; i++) {
-            strip.setPixelColor(i, strip.Color(255, 0, 0));
-        }
-        strip.show();
-        delay(wait);
+        // for(int i = 4; i < 8; i++) {
+        //     strip.setPixelColor(i, strip.Color(255, 0, 0));
+        // }
+        // strip.show();
+        // delay(wait);
 
         playHall2();
     }
@@ -200,6 +202,7 @@ void offLedModule2() {
 }
 
 void onLedModule3() {
+    pulseGreenFill(5);
     if(activeHall3 == 0) {
         activeHall3 = 1;
         playingHall3 = 1;
@@ -208,11 +211,11 @@ void onLedModule3() {
         pausableHall2 = 0;
         pausableHall4 = 0;
 
-        for(int i = 8; i < 12; i++) {
-            strip.setPixelColor(i, strip.Color(255, 0, 0));
-        }
-        strip.show();
-        delay(wait);
+        // for(int i = 8; i < 12; i++) {
+        //     strip.setPixelColor(i, strip.Color(255, 0, 0));
+        // }
+        // strip.show();
+        // delay(wait);
 
         playHall3();
     }
@@ -235,6 +238,7 @@ void offLedModule3() {
 }
 
 void onLedModule4() {
+    pulseBlueFill(5);
     if(activeHall4 == 0) {
         activeHall4 = 1;
         playingHall4 = 1;
@@ -243,11 +247,11 @@ void onLedModule4() {
         pausableHall2 = 0;
         pausableHall3 = 0;
 
-        for(int i = 12; i < 16; i++) {
-            strip.setPixelColor(i, strip.Color(255, 0, 0));
-        }
-        strip.show();
-        delay(wait);
+        // for(int i = 12; i < 16; i++) {
+        //     strip.setPixelColor(i, strip.Color(255, 0, 0));
+        // }
+        // strip.show();
+        // delay(wait);
 
         playHall4();
     }
@@ -273,12 +277,14 @@ void offLedModule4() {
 void solve() {
     solved = 1;
     
-    for(int i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(255, 255, 255));
-    // delay(wait);
-    strip.show();
-    allLedsOff();
-    }
+    rainbow(10);
+
+    // for(int i = 0; i < strip.numPixels(); i++) {
+    //     strip.setPixelColor(i, strip.Color(255, 255, 255));
+    // // delay(wait);
+    // strip.show();
+    // allLedsOff();
+    // }
     
     hall1State = digitalRead(hall1);
     hall2State = digitalRead(hall2);
@@ -299,6 +305,7 @@ void solve() {
         activeHall3 = 0;
         activeHall4 = 0;
     }
+   
 }
 
 void allLedsOff() {
@@ -322,50 +329,56 @@ void rainbow(int wait) {
 
 /*pulsating effect implemented with NeoPixels fill() method*/
 
-void pulseYellowFill() {
-  for(int i = 0; i < 225; i++) {
-	strip.fill(strip.Color(i+15, i, 0), 11, 4);
-    strip.show();	  
-  }
-  for(int i = 225; i > -1; i--) {
-	strip.fill(strip.Color(i+15, i, 0), 11, 4);
-	strip.show();
-  }
+void pulseYellowFill(uint8_t wait) {
+    for(int i = 20; i < 225; i++) {
+  	    strip.fill(strip.Color(i+15, i, 0), 0, 4);
+        strip.show();
+        delay(wait - 2);  
+    }
+    for(int i = 225; i > 19; i--) {
+  	    strip.fill(strip.Color(i+15, i, 0), 0, 4);
+  	    strip.show();
+        delay(wait);
+    }
 }
 
 void pulseRedFill(uint8_t wait) {
-  for(int i = 20; i < 256; i++) {
-    strip.fill(strip.Color(i, 0, 0), 0, 4);
-	  strip.show();
-    delay(wait - 2);
-  }
-  for(int i = 255; i > 19; i--) {
-    strip.fill(strip.Color(i, 0, 0), 0, 4);
-	  strip.show();
-    delay(wait);
-  }
-}
-
-void pulseGreenFill() {
-  for(int i = 0; i < 256; i++) {
-    strip.fill(strip.Color(0, i, 0), 4, 7);
-	strip.show();
-  }
-  for(int i = 255; i > -1; i--) {
-    strip.fill(strip.Color(0, i, 0), 4, 7);
-	strip.show();
+    for(int i = 20; i < 256; i++) {
+        strip.fill(strip.Color(i, 0, 0), 4, 4);
+	    strip.show();
+        delay(wait - 2);
+    }
+    for(int i = 255; i > 19; i--) {
+        strip.fill(strip.Color(i, 0, 0), 4, 4);
+	    strip.show();
+        delay(wait);
   }
 }
 
-void pulseBlueFill() {
-  for(int i = 0; i < 256; i++) {
-    strip.fill(strip.Color(0, 0, i), 8, 11);
-	strip.show();
-  }
-  for(int i = 0; i > -1; i--) {
-    strip.fill(strip.Color(0, 0, i), 8, 11);
-	strip.show();
-  }
+void pulseGreenFill(uint8_t wait) {
+    for(int i = 20; i < 256; i++) {
+        strip.fill(strip.Color(0, i, 0), 8, 4);
+	    strip.show();
+        delay(wait - 2);
+    }
+    for(int i = 255; i > 19; i--) {
+        strip.fill(strip.Color(0, i, 0), 8, 4);
+  	    strip.show();
+        delay(wait);
+    }
+}
+
+void pulseBlueFill(uint8_t wait) {
+    for(int i = 20; i < 256; i++) {
+        strip.fill(strip.Color(0, 0, i), 12, 4);
+  	    strip.show();
+        delay(wait - 2);
+    }
+    for(int i = 255; i > 19; i--) {
+        strip.fill(strip.Color(0, 0, i), 12, 4);
+  	    strip.show();
+        delay(wait);
+    }
 }
 
 /* Functions for audio playback */
@@ -383,12 +396,12 @@ void playHall1() {
 
 void playHall2() {
     if(playingHall2 == 1) {
-    playingHall2 = 0;
-    PlayPause();
-    delay(wait);
+        playingHall2 = 0;
+        PlayPause();
+        delay(wait);
 
-    SpecifyMusicPlay(2);
-    delay(wait);
+        SpecifyMusicPlay(2);
+        delay(wait);
     }
 }
 
